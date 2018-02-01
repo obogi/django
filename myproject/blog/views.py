@@ -80,7 +80,7 @@ def post_edit(request, pk):
         post.save()
         # 이후 상세화면으로 이동
         return redirect('post-detail', pk=post.pk)
-    # GET메서드 요청일 경우
+    # GET 메서드 요청일 경우
     context = {
         'post': post,
     }
@@ -93,24 +93,32 @@ def post_add(request):
     # 이 뷰가 실행되어서 Post add page라는 문구를 보여주도록 urls작성
     # HttpResponse가 아니라 blog/post_add.html을 출력
     # post_add.html은 base.html을 확장, title(h2)부분에 'Post add'라고 출력
+    context={}
     if request.method == 'POST':
         # 요청의 method가 POST일 때
         # HttpResponse로 POST요청에 담겨온
         # title과 content를 합친 문자열 데이터를 보여줌
         title = request.POST['title']
         content = request.POST['content']
-        # ORM을 사용해서 title과 content에 해당하는 Post생성
-        post = Post.objects.create(
-            author=request.user,
-            title=title,
-            content=content,
-        )
-        # post-detail이라는 URL name을 가진 뷰로
-        # 리디렉션 요청을 보냄
-        # 이 때, post-detail URL name으로 특정 URL을 만드려면
-        # pk값이 필요하므로 키워드 인수로 해당 값을 넘겨준다
-        return redirect('post-detail', pk=post.pk)
-    else:
+        # 만약 title이나 content가 비어있으면
+        # 다시 글 작성화면으로 이동
+        # 이동시키지 말고 아래까지 내려가서 오류메시지 출력
+        if not (title and content):
+            context['form_error'] = "제목과 내용을 입력해주세요"
+        else:
+            #return redirect('post-add') #<-- 타이틀/컨텐트가 비어있으면 글작성화면 리턴
+            # ORM을 사용해서 title과 content에 해당하는 Post생성
+            post = Post.objects.create(
+                author=request.user,
+                title=title,
+                content=content,
+            )
+            # post-detail이라는 URL name을 가진 뷰로
+            # 리디렉션 요청을 보냄
+            # 이 때, post-detail URL name으로 특정 URL을 만드려면
+            # pk값이 필요하므로 키워드 인수로 해당 값을 넘겨준다
+            return redirect('post-detail', pk=post.pk)
+
         # 요청의 method가 GET일 때
         return render(request, 'blog/post_add.html')
 

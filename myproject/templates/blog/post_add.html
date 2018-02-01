@@ -1,8 +1,8 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 
-{%  block title %} post add {%  endblock %}
+{% block title %} post add {% endblock %}
 
-{%  block content %}
+{% block content %}
     <form action="" method="POST">
         {%  csrf_token %}
         <div class="form-group">
@@ -12,7 +12,7 @@
 
         <div class="form-group">
             <label for="content">내용</label>
-            <textarea name="content" id="content" class="form-control" cols="10" rows="10"></textarea>
+            <textarea name="content" id="content" class="form-control"></textarea>
         </div>
 
         <button type="submit" class ="btn btn-primary">작성하기</button>

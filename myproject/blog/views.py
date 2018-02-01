@@ -21,7 +21,7 @@ def post_list(request):
     # return HttpResponse('<html><body><h1>Post list</h1><p>Post목록을 보여줄 예정입니다</p></body></html>')
 
     posts = Post.objects.all()
-    # render()함수에 전달할 dict 객체 생성
+    # render()함수에 전달할 dict객체 생성
     context = {
         'posts': posts,
     }
@@ -43,3 +43,11 @@ def post_detail(request, pk):
         'blog/post_detail.html',
         context
     )
+
+
+def post_add(request):
+    # localhost:8000/add로 접근시
+    # 이 뷰가 실행되어서 Post add page라는 문구를 보여주도록 urls작성
+    # HttpResponse가 아니라 blog/post_add.html을 출력
+    # post_add.html은 base.html을 확장, title(h2)부분에 'Post add'라고 출력
+    return render(request, 'blog/post_add.html')
